@@ -1,0 +1,31 @@
+{% extends "baseOutline.html" %}
+{% block content %}
+<!-- 변경 텝 -->
+<ul>
+  <li><a href="/modify_weight">목표생산 무게 변경</a></li>
+  <li><a href="/modify_error">목표 오차율 변경</a></li>
+  <li><a href="/modify_product">상품 품목 변경</a></li>
+</ul>
+
+<div id="content">
+  <h1>목표생산 무게 변경</h1>
+  <article>
+    <p>
+      현재 목표량 /1일 생성 갯수
+    </p>
+  </article>
+  <article class='main_article'>
+    <p>
+      입력란 : <input type='text' value='' / />
+    </p>
+  </article>
+  <article class='main_article'>
+    <p>
+      예측 결과(시간당 생산량) :
+      <div align="right">
+        <button class="button"><span> 적 용 </span></button>
+      </div>
+    </p>
+  </article>
+
+  {% endblock %}
