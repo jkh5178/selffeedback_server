@@ -4,14 +4,17 @@ import DB_Thread
 class Threadmain:
     ##클래스 생성시 쓰레드를 담을 list 생성
     def __init__(self):
+        #DB연결 부분
         self.db=DB_Thread.DBconn(self)
         self.db.get_SetValue()
+
         self.count=0
         self.thread_list=[]
         #DB에 연결하여 가져올 데이터
-        #목표량, 물건을 넣을 시간,
-        self.timetoopen=0
+        #목표량, 물건을 넣을 시간,현재 공정의 상태
         self.target_weight=0
+        self.opentime=2000
+        self.main_state="end"
     
     ##쓰레드 만들기(소캣(클라이언트)과 주소를 받아옴)
     def make_thread(self, socket, addr):

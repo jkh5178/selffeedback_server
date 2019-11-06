@@ -18,13 +18,18 @@ class Client(threading.Thread):
         self.name = str(self.content)[1:].strip("'")
         ##공정 구분 분기점
         print(self.name)
+        
         if self.name=='B':
-            #self.client.send(self.tm.timetoopen)#초기화 시 현재 DB의 열리는 시간 값 전송
+            self.client.send(str(self.tm.opentime))#초기화 시 현재 DB의 열리는 시간 값 전송
             self.send_to='D'##원하는 쓰래스의 공정이름 저장
         elif self.name=='D':
             self.send_to='B'
         elif self.name=='C':
             self.target=self.tm.target_weight
+
+        #현재 전체공정이 진행중이라면 재접속한 client에서 자동 시작 요청
+        if self.tm.mainstate=='start':
+            self.send("start")
         ##계속적인 수신
         try:
             while True:
