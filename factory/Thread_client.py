@@ -19,16 +19,34 @@ class Client(threading.Thread):
         ##공정 구분 분기점
         print(self.name)
         if self.name=='B':
+            #self.client.send(self.tm.timetoopen)#초기화 시 현재 DB의 열리는 시간 값 전송
             self.send_to='D'##원하는 쓰래스의 공정이름 저장
         elif self.name=='D':
             self.send_to='B'
+        elif self.name=='C':
+            self.target=self.tm.target_weight
         ##계속적인 수신
         try:
             while True:
                 self.content=self.client.recv(32)
                 message=str(self.content)[1:].strip("'")
+                ##C,B공정에서 정수를 전송하는 경우 추가
                 print(message)
-                self.broadcast(self.send_to,message+'\n')
+                if self.name=='master':
+                    if message=='s':
+                        self.tm.start()
+                    elif message=='e':
+                        self.tm.stop()
+                elif(self.name=='B' or self.name=='D'):
+                    self.broadcast(self.send_to,message+'\n')
+                elif(self.name=='C'):
+                    self.weight=int(message)
+                    if(self.weight>=self.target*0.08 and self.weight<=self.target*1.02):
+                        self.send("true\n")
+                        self.tm.savedata(self.weight,"true")
+                    else:
+                        self.send("false\n")
+                        self.tm.savedata(self.weight,"false")
         except Exception as err:
             print(err)
             print(self.tm.thread_list)

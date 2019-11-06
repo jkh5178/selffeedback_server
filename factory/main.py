@@ -14,7 +14,7 @@ s.listen(0)
 while True:
     ##소캣이 연결 될때 까지 대기
     client, addr = s.accept()
-    ##연결시 client는 연결정보 addr은 (주소, 포트)를 저장후
+    ##연결시 client는 연결정보 addr은 (주소, 포트)를 저장 후
     ##쓰레드를 만든다.
     tm.make_thread(socket=client, addr=addr)
     
