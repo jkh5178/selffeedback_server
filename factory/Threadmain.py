@@ -12,7 +12,7 @@ class Threadmain:
         self.thread_list=[]
         #DB에 연결하여 가져올 데이터
         #목표량, 물건을 넣을 시간,현재 공정의 상태
-        self.target_weight=0
+        self.target_weight=20
         self.opentime=2000
         self.main_state="end"
     
@@ -32,12 +32,26 @@ class Threadmain:
 
     def start(self):
         print("start")
+        self.main_state="start"
         for temp in self.thread_list:
             temp.send("start")
     def stop(self):
         print("end")
+        self.main_state="end"
         for temp in self.thread_list:
+            name=temp.getName()
+            print("end module"+name)
+            if(name=="D"):
+                temp.client.close()
+                continue
+            if(name=="A"):
+                temp.client.close()
+                continue
+            if(name=="C"):
+                temp.client.close()
+                continue
             temp.send("end")
+
 
     def savedata(self,weight, value):
         self.db.input_Value(weight, value)

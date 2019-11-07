@@ -1,7 +1,7 @@
 import threading
 import Threadmain
 import socket
-
+import time
 ##각 모듈과 연결되는 쓰레드 클래스->쓰레드 상속 받아옴
 class Client(threading.Thread):
     ##생성시 소캣정보(client), 주소(ip주소, port, 쓰래드 관리 클래스를 받아온다.)
@@ -20,15 +20,18 @@ class Client(threading.Thread):
         print(self.name)
         
         if self.name=='B':
-            self.client.send(str(self.tm.opentime))#초기화 시 현재 DB의 열리는 시간 값 전송
+            print(str(self.tm.opentime))
+            self.send(str(self.tm.opentime))#초기화 시 현재 DB의 열리는 시간 값 전송
             self.send_to='D'##원하는 쓰래스의 공정이름 저장
         elif self.name=='D':
             self.send_to='B'
         elif self.name=='C':
-            self.target=self.tm.target_weight
+            print(self.tm.target_weight)
+            self.send(str(self.tm.target_weight)+'\n')
+            self.send(str(2)+'\n')
 
         #현재 전체공정이 진행중이라면 재접속한 client에서 자동 시작 요청
-        if self.tm.mainstate=='start':
+        if self.tm.main_state=='start':
             self.send("start")
         ##계속적인 수신
         try:
@@ -45,12 +48,12 @@ class Client(threading.Thread):
                 elif(self.name=='B' or self.name=='D'):
                     self.broadcast(self.send_to,message+'\n')
                 elif(self.name=='C'):
-                    self.weight=int(message)
-                    if(self.weight>=self.target*0.08 and self.weight<=self.target*1.02):
-                        self.send("true\n")
+                    self.weight=float(message)
+                    if(self.weight>=self.tm.target_weight*0.08 and self.weight<=self.tm.target_weight*1.02):
+                        print(self.weight,"ture")
                         self.tm.savedata(self.weight,"true")
                     else:
-                        self.send("false\n")
+                        print(self.weight,"flase")
                         self.tm.savedata(self.weight,"false")
         except Exception as err:
             print(err)
