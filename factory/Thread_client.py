@@ -23,8 +23,6 @@ class Client(threading.Thread):
             print(str(self.tm.opentime))
             self.send(str(self.tm.opentime))#초기화 시 현재 DB의 열리는 시간 값 전송
             self.send_to='D'##원하는 쓰래스의 공정이름 저장
-        elif self.name=='D':
-            self.send_to='B'
         elif self.name=='C':
             print(self.tm.target_weight)
             self.send(str(self.tm.target_weight)+'\n')
@@ -45,16 +43,28 @@ class Client(threading.Thread):
                         self.tm.start()
                     elif message=='e':
                         self.tm.stop()
-                elif(self.name=='B' or self.name=='D'):
+                elif (self.name=='D'):
+                    temp=message.split(";")
+                    print(temp)
+                    if temp[0]=="B":
+                        print("B stop")
+                        self.broadcast(temp[0],temp[1]+'\n')
+                    elif temp[0]=="C":
+                        print("C stop")
+                        self.broadcast(temp[0],temp[1]+'\n')
+                elif(self.name=='B'):
                     self.broadcast(self.send_to,message+'\n')
                 elif(self.name=='C'):
-                    self.weight=float(message)
-                    if(self.weight>=self.tm.target_weight*0.08 and self.weight<=self.tm.target_weight*1.02):
-                        print(self.weight,"ture")
-                        self.tm.savedata(self.weight,"true")
+                    if message=="go2":
+                        self.broadcast("D",message+'\n')
                     else:
-                        print(self.weight,"flase")
-                        self.tm.savedata(self.weight,"false")
+                        self.weight=float(message)
+                        if(self.weight>=self.tm.target_weight*0.08 and self.weight<=self.tm.target_weight*1.02):
+                            print(self.weight,"ture")
+                            self.tm.savedata(self.weight,"true")
+                        else:
+                            print(self.weight,"flase")
+                            self.tm.savedata(self.weight,"false")
         except Exception as err:
             print(err)
             print(self.tm.thread_list)
