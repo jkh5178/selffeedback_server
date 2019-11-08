@@ -6,14 +6,12 @@ class Threadmain:
     def __init__(self):
         #DB연결 부분
         self.db=DB_Thread.DBconn(self)
-        self.db.get_SetValue()
-
+        self.target_weight,self.opentime, self.target_range=self.db.get_SetValue()
+        print(self.target_weight,self.opentime, self.target_range)
         self.count=0
         self.thread_list=[]
         #DB에 연결하여 가져올 데이터
         #목표량, 물건을 넣을 시간,현재 공정의 상태
-        self.target_weight=20
-        self.opentime=2000
         self.main_state="end"
     
     ##쓰레드 만들기(소캣(클라이언트)과 주소를 받아옴)

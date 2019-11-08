@@ -26,7 +26,7 @@ class Client(threading.Thread):
         elif self.name=='C':
             print(self.tm.target_weight)
             self.send(str(self.tm.target_weight)+'\n')
-            self.send(str(2)+'\n')
+            self.send(str(self.tm.target_range)+'\n')
 
         #현재 전체공정이 진행중이라면 재접속한 client에서 자동 시작 요청
         if self.tm.main_state=='start':
@@ -59,12 +59,12 @@ class Client(threading.Thread):
                         self.broadcast("D",message+'\n')
                     else:
                         self.weight=float(message)
-                        if(self.weight>=self.tm.target_weight*0.08 and self.weight<=self.tm.target_weight*1.02):
+                        if(self.weight>=self.tm.target_weight-self.tm.target_weight*0.02 and self.weight<=self.tm.target_weight+self.tm.target_weight*0.02):
                             print(self.weight,"ture")
-                            self.tm.savedata(self.weight,"true")
+                            self.tm.savedata(self.weight,1)
                         else:
                             print(self.weight,"flase")
-                            self.tm.savedata(self.weight,"false")
+                            self.tm.savedata(self.weight,0)
         except Exception as err:
             print(err)
             print(self.tm.thread_list)
