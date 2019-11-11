@@ -1,5 +1,5 @@
-from Thread_client import Client
-from factory_enum import device
+from device.Thread_client import Client
+from device.factory_enum import device
 class Master(Client):
     def __init__(self,index,client,mainThread):
         Client.__init__(self,index,client,mainThread)

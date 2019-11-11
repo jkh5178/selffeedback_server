@@ -1,5 +1,5 @@
-from Thread_client import Client
-from factory_enum import device
+from device.Thread_client import Client
+from device.factory_enum import device
 class ProductDipensor(Client):
     def __init__(self,index,client,mainThread,opentime):
         Client.__init__(self,index=index,client=client,mainThread=mainThread)

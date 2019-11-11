@@ -11,7 +11,7 @@ class WeightSeneor(Client):
         while True:
                 self.content=self.client.recv(32)
                 message=str(self.content)[1:].strip("'")
-                if message=="go2":
+                if message=="go":
                     self.send_to_thread(device.CONVEYER,message+'\n')
                     #그외에는 무게 측정 값이 전달 됨으로 판별후 DB에 저장
                 else:
