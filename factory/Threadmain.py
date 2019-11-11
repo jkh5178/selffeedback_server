@@ -1,5 +1,11 @@
-import Thread_client
+import device.Thread_client
 import DB_Thread
+from device.product_dispensor import ProductDipensor
+from device.weight_sensor import WeightSeneor
+from device.conveyer import Conveyer
+from device.cup_dispensor import CupDispensor
+from device.factory_enum import device
+from device.master import Master
 ##쓰래드를 관리하는 클래스
 class Threadmain:
     ##클래스 생성시 쓰레드를 담을 list 생성
@@ -12,48 +18,57 @@ class Threadmain:
         print(self.target_weight,self.opentime, self.target_range)
         self.count=0
         #스레드의 관리를 위한 list
-        self.thread_list=[]
+        self.thread_dic={}
         #현제 전체 공정 상태 관리
         self.main_state="end"
     
     ##쓰레드 만들기(소캣(클라이언트)과 주소를 받아옴)
     def make_thread(self, socket, addr):
         ##쓰래드 클라이언트 생성
-        ##소캣 정보와 주소와 자기자신을 기억 시킨다.
-        print(self.thread_list)
-        client=Thread_client.Client(socket,addr,self)
-        ##생성된 쓰레드 객체를 list에 추가한다.
-        self.thread_list.append(client)
-        ##쓰래드를 실행한다.
-        client.start()
+        ##소캣 정보와 주소와 자기자
+        content=socket.recv(32)
+        message=str(content)[1:].strip("'")
+        print(self.thread_dic)
+        if message == "A":
+            cd = CupDispensor(index=device.CUP_DISPENSOR,client=socket,mainThread=self)
+            self.thread_dic[cd.index] = cd
+            cd.start()
+        elif message == "B":
+            pd = ProductDipensor(index=device.PRODUCT_DISPENSOR,client=socket,mainThread=self,opentime=self.opentime)
+            self.thread_dic[pd.index] = pd
+            pd.start()
+        elif message == "C":
+            ws = WeightSeneor(index=device.WEIGHT_SENSOR,client=socket,mainThread=self,target_range= self.target_range, target_weight=self.target_weight)
+            self.thread_dic[ws.index] = ws
+            ws.start()
+        elif message == "D":
+            convey = Conveyer(index=device.CONVEYER,client=socket,mainThread=self)
+            self.thread_dic[convey.index] = convey
+            convey.start()
+        elif message == "master":
+            master = Master(index=device.MASTER,client=socket,mainThread=self)
+            self.thread_dic[master.index] = master
+            master.start()
     #소캣 list에서 삭제
-    def remove_client(self,socket):
-        print(socket)
-        self.thread_list.remove(socket)
-    #소캣 전체 시작
+    def remove_client(self,thread):
+        print(thread)
+        del(self.thread_dic[thread.index])
+        #소캣 전체 시작
     def start(self):
         print("start")
         self.main_state="start"
-        for temp in self.thread_list:
-            temp.send("start")
+        for temp in self.thread_dic:
+            print(self.thread_dic[temp])
+            self.thread_dic[temp].send_to_device(self.main_state)
     
     #소캣 전체 정지
     def stop(self):
         print("end")
         self.main_state="end"
-        for temp in self.thread_list:
-            name=temp.getName()
-            print("end module"+name)
-            if(name=="D"):
-                temp.client.close()
-                continue
-            if(name=="A"):
-                temp.client.close()
-                continue
-            if(name=="C"):
-                temp.client.close()
-                continue
-            temp.send("end")
+        self.thread_dic[device.CUP_DISPENSOR].client.close()
+        self.thread_dic[device.PRODUCT_DISPENSOR].send_to_device(self.main_state)
+        self.thread_dic[device.WEIGHT_SENSOR].client.close()
+        self.thread_dic[device.CONVEYER].client.close()
     #C에서 전송한 데이터 DB로 저장
     def savedata(self,weight, value):
         self.db.input_Value(weight, value)

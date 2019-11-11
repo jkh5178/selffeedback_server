@@ -37,7 +37,7 @@ class DBconn(threading.Thread):
         for i in rows:
             self.no=i['no']
             #가져온 데이터중 무게, 열리는 시간, 오차 범위 불러옴
-            return i['target_weight'], i['open_time'], i['target_range'],
+            return i['target_weight'], i['open_time'], i['target_range']
 
     #측정 데이터 저장 무게와 판별 결과 저장
     def input_Value(self, weight, value):
