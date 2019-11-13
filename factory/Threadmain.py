@@ -51,11 +51,11 @@ class Threadmain:
             self.thread_dic[convey.index] = convey
             convey.start()
         elif message =="E":
-            remain_sensor=RemainSensor(index=device.remain_sensor,client=socket,mainTread=self)
-            self.thread_dic[convey.index] = remain_sensor
+            remain_sensor=RemainSensor(index=device.REMAINSENSOR, client=socket, mainThread=self)
+            self.thread_dic[remain_sensor.index] = remain_sensor
             remain_sensor.start()
         elif message == "master":
-            master = Master(index=device.MASTER,client=socket,mainThread=self)
+            master = Master(index=device.MASTER, client=socket, mainThread=self)
             self.thread_dic[master.index] = master
             master.start()
     #소캣 list에서 삭제
