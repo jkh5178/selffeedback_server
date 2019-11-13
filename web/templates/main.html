@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      //총 생산량 차트
+      google.charts.load('current', {
+        'packages': ['corechart']
+      });
+      google.charts.setOnLoadCallback(drawVisualization);
+
+      function drawVisualization() {
+        var data = google.visualization.arrayToDataTable([
+          ['product', '생산량'],
+          ['product_A', 25],
+          ['product_B', 35],
+          ['product_C', 20]
+        ]);
+
+        var options = {
+          vAxis: {
+            title: '총 생산량'
+          },
+          hAxis: {
+            title: '생산품목'
+          },
+          seriesType: 'bars',
+          series: {
+            1: {
+              type: 'line'
+            }
+          }
+
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('total_production_chart'));
+        chart.draw(data, options);
+      }
+
+      //양품.불량품 차트
+      google.charts.load('current', {
+        packages: ['corechart', 'bar']
+      });
+      google.charts.setOnLoadCallback(drawMultSeries);
+
+      function drawMultSeries() {
+        var data = google.visualization.arrayToDataTable([
+          ['product', '양품량', '불량품량'],
+          ['product_A', 23, 2],
+          ['product_B', 34, 1],
+          ['product_C', 17, 3]
+        ]);
+
+        var options = {
+          chartArea: {
+            width: '50%'
+          },
+          hAxis: {
+            title: '양품/불량품 수량',
+            minValue: 0
+          },
+          vAxis: {
+            title: '상품품목'
+          }
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('comparison_chart'));
+        chart.draw(data, options);
+      }
+
+
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+      ctx.stroke();
+
+    </script>
+
+    <style>
+      /* 메뉴 바 */
+      ul {
+        list-style-type: none;
+        height: 70px;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+      }
+
+      li {
+        float: left;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 10px 10px;
+        text-decoration: none;
+      }
+
+      li a:hover {
+        background-color: #111;
+      }
+
+      /* 컨테이너  */
+      #container {
+        width: 1400px;
+        height: 580px;
+        margin: 10px auto;
+        padding: 20px;
+        border: 10px solid #bcbcbc;
+      }
+
+      div.header_1 {
+        width: 235px;
+        height: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: left;
+        border: 3px solid #bcbcbc;
+      }
+
+      div.header_2 {
+        width: 235px;
+        height: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: left;
+        border: 3px solid #bcbcbc;
+      }
+
+      div.header_3 {
+        width: 235px;
+        height: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: left;
+        border: 3px solid #bcbcbc;
+      }
+
+      div.header_right {
+        width: 494px;
+        height: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: right;
+        border: 3px solid #bcbcbc;
+      }
+
+      div.production_line {
+        width: 800px;
+        height: 460px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.cup_stock {
+        width: 247px;
+        height: 50px;
+        padding: 10px;
+        margin-bottom: 20px;
+        float: right;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.product_stock {
+        width: 247px;
+        height: 50px;
+        padding: 10px;
+        margin-bottom: 20px;
+        float: right;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.total_production {
+        width: 496px;
+        height: 153px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: right;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.total_production#charset {
+        float: right;
+      }
+
+      div.comparison {
+        width: 496px;
+        height: 153px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: right;
+        border: 1px solid #bcbcbc;
+      }
+
+      /* 차트 위치 */
+      #total_production_chart {
+        float: right;
+        margin-right: 50px;
+      }
+
+      #comparison_chart {
+        float: right;
+        margin-right: 30px;
+      }
+
+      /* 공정 가동 */
+      .button1 {
+        background-color: #4CAF50;
+        /* Green */
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        float: left;
+      }
+
+      .button1:hover {
+        background-color: #3e8e41;
+      }
+
+      /* 가동 중지 */
+      .button2 {
+        background-color: #f44336;
+        /* Green */
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        float: left;
+      }
+
+      .button2:hover {
+        background-color: #E50E0E;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <ul>
+      <li><a href="/"><img src={{url_for('static', filename="img/main.png") }} style="width:50px; height:50px;"></a></li>
+      <li><a href="/management"><img src={{url_for('static', filename="img/management.png") }} style="width:50px; height:50px;"></a></li>
+    </ul>
+    <div id="container">
+      <div>
+        <div>
+          <div class="header_1">목표량</div>
+          <div class="header_2">양품량</div>
+          <div class="header_3">불량품량</div>
+        </div>
+        <div class="header_right" align="center">실시간 운영현황</div>
+      </div>
+      <div>
+        <div class="production_line">
+          <div>
+            <button class="button1">공정 가동</button>
+            <button class="button2">가동 정지</button>
+          </div>
+          <br />
+          <h2>생산 라인</h2>
+          <img src={{url_for('static', filename="img/factoryLine.png") }} style="width:700px; height:350px;">
+          <canvas id="myCanvas"></canvas>
+        </div>
+        <div class="cup_stock">컵 재고량</div>
+        <div class="product_stock">상품 재고량</div>
+        <div class="total_production">
+          총 생산량
+          <div id="total_production_chart" style="width:340px; height: 160px;"></div>
+        </div>
+        <div class="comparison">
+          양품/불량품 현황
+          <div id="comparison_chart" style="width:340px; height: 160px;"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>

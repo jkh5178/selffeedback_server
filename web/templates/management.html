@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      /* 메뉴바 */
+      ul {
+        list-style-type: none;
+        height: 70px;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+      }
+
+      li {
+        float: left;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 10px 10px;
+        text-decoration: none;
+      }
+
+      li a:hover {
+        background-color: #111;
+      }
+
+      #container {
+        width: 1400px;
+        height: 580px;
+        margin: 10px auto;
+        padding: 20px;
+        border: 10px solid #bcbcbc;
+      }
+
+      div.header_product {
+        width: 1350px;
+        height: 20px;
+        padding: 20px;
+        margin-top: 10px;
+        border: 3px solid #bcbcbc;
+      }
+
+
+      div.header_1 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.header_2 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.header_3 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.content_1 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.content_2 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.content_3 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.product_modify {
+        width: 1350px;
+        height: 20px;
+        padding: 20px;
+        margin-top: 20px;
+        border: 3px solid #bcbcbc;
+        display: inline-block;
+      }
+
+      div.modify_1 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.modify_2 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      div.modify_3 {
+        width: 422px;
+        height: 50px;
+        padding: 20px;
+        margin-top: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+
+      /* button */
+      .button {
+        border-radius: 4px;
+        background-color: #6C6C6E;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 15px;
+        padding: 10px;
+        width: 100px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+      }
+
+      .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+
+      .button:hover span {
+        padding-right: 25px;
+      }
+
+      .button:hover span:after {
+        opacity: 1;
+        right: 0;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <ul>
+      <li><a href="/"><img src={{url_for('static', filename="img/main.png") }} style="width:50px; height:50px;"></a></li>
+      <li><a href="/management"><img src={{url_for('static', filename="img/management.png") }} style="width:50px; height:50px;"></a></li>
+    </ul>
+    <div id="container">
+      <div class="header">
+        SmartFactory
+      </div>
+      <div class="header_product" align="center">제품A</div>
+      <div class="#">
+        <div class="header_1">목표량</div>
+        <div class="header_2">양품량</div>
+        <div class="header_3">불량품량</div>
+      </div>
+      <div class="#">
+        <div class="content_1">달성률</div>
+        <div class="content_2">불량률</div>
+        <div class="content_3">
+          관리자
+          <div align="right">
+            <input type="button" class="#" value="호출" />
+          </div>
+        </div>
+      </div>
+      <div class="product_modify" align="center">생산품목 변경</div>
+      <div>
+        <div class="modify_1">목표량 변경: <input type="number" id="a" name="a" step="0.1" value="0">g</div>
+        <div class="modify_2">생산품목 변경: <input type="text" id="b" name="b"></div>
+        <div class="modify_3">오차률 변경: <input type="number" id="c" name="c" step="0.1" value="0">%</div>
+      </div>
+      <div align="right">
+        <button type="submit" class="button"><span> 적 용 </span></button>
+      </div>
+    </div>
+  </body>
+
+</html>
