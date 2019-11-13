@@ -5,4 +5,5 @@ class device(Enum):
     PRODUCT_DISPENSOR=1
     WEIGHT_SENSOR=2
     CONVEYER=3
+    REMAINSENSOR=4
     MASTER=9

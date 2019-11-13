@@ -1,5 +1,5 @@
-from device.Thread_client import Client
-from device.factory_enum import device
+from module.Thread_client import Client
+from module.factory_enum import device
 class Master(Client):
     def __init__(self,index,client,mainThread):
         Client.__init__(self,index,client,mainThread)
@@ -10,7 +10,11 @@ class Master(Client):
             print(str(message))
             if message=='s':
                 self.tm.start()
+                self.send_to_device('start')
             elif message=='e':
                 self.tm.stop()
+                self.send_to_device('end')
             elif message=='c':
+                print(self.tm.thread_dic)
                 print(len(self.tm.thread_dic))
+                self.send_to_device(str(len(self.tm.thread_dic)))

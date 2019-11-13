@@ -28,7 +28,7 @@ class Client(threading.Thread):
             print(self.tm.thread_dic)
             self.tm.remove_client(self)
             self.client.close()
-            print("client finish")
+            print(self.name+"client finish")
 
     ##내가 받은 내용 같은 관리 클래스에 들어있는 쓰레드에게 전송
     ##원하는 이름의 공저으로 전송 가능(to_Client에 원하는 공정이름 지정시))

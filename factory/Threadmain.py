@@ -1,24 +1,29 @@
-import device.Thread_client
-import DB_Thread
-from device.product_dispensor import ProductDipensor
-from device.weight_sensor import WeightSeneor
-from device.conveyer import Conveyer
-from device.cup_dispensor import CupDispensor
-from device.factory_enum import device
-from device.master import Master
+import  module.Thread_client
+import  DB_Thread
+from  module.product_dispensor import ProductDipensor
+from  module.weight_sensor import WeightSeneor
+from  module.conveyer import Conveyer
+from  module.cup_dispensor import CupDispensor
+from  module.factory_enum import device
+from module.master import Master
+from module.remain_sensor import RemainSensor
+import time
 ##쓰래드를 관리하는 클래스
 class Threadmain:
     ##클래스 생성시 쓰레드를 담을 list 생성
     def __init__(self):
         #DB연결 부분
-        self.db=DB_Thread.DBconn(self)
+        self.db= DB_Thread.DBconn(self)
         #DB에 연결하여 가져올 데이터
         #목표량, 물건을 넣을 시간, 오차 범위 가져오기
         self.target_weight,self.opentime, self.target_range=self.db.get_SetValue()
         print(self.target_weight,self.opentime, self.target_range)
-        self.count=0
+
+        self.count=0#생산량
+
         #스레드의 관리를 위한 list
         self.thread_dic={}
+
         #현제 전체 공정 상태 관리
         self.main_state="end"
     
@@ -45,6 +50,10 @@ class Threadmain:
             convey = Conveyer(index=device.CONVEYER,client=socket,mainThread=self)
             self.thread_dic[convey.index] = convey
             convey.start()
+        elif message =="E":
+            remain_sensor=RemainSensor(index=device.remain_sensor,client=socket,mainTread=self)
+            self.thread_dic[convey.index] = remain_sensor
+            remain_sensor.start()
         elif message == "master":
             master = Master(index=device.MASTER,client=socket,mainThread=self)
             self.thread_dic[master.index] = master
@@ -66,9 +75,19 @@ class Threadmain:
         print("end")
         self.main_state="end"
         self.thread_dic[device.CUP_DISPENSOR].client.close()
-        self.thread_dic[device.PRODUCT_DISPENSOR].send_to_device(self.main_state)
+        self.thread_dic[device.PRODUCT_DISPENSOR].client.close()
         self.thread_dic[device.WEIGHT_SENSOR].client.close()
         self.thread_dic[device.CONVEYER].client.close()
     #C에서 전송한 데이터 DB로 저장
     def savedata(self,weight, value):
         self.db.input_Value(weight, value)
+    
+
+    def refrash_data(self):
+        self.target_weight,self.opentime, self.target_range=self.db.get_SetValue()
+        self.stop()
+        time.sleep(30)
+        if len(self.thread_dic)==5:
+            self.start()
+    def lean_thread(self):
+        self.db.start()

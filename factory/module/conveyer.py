@@ -1,5 +1,5 @@
-from device.Thread_client import Client
-from device.factory_enum import device
+from module.Thread_client import Client
+from module.factory_enum import device
 class Conveyer(Client):
     def __init__(self,index, client, mainThread):
         Client.__init__(self,index,client,mainThread)
@@ -12,8 +12,8 @@ class Conveyer(Client):
                 print(temp)
                 if temp[0]=="B":
                     print("B stop")
-                    self.send_to_thread(device.PRODUCT_DISPENSOR,temp[1]+'\n')
+                    self.send_to_thread(device.PRODUCT_DISPENSOR, temp[1]+'\n')
                 elif temp[0]=="C":
                     print("C stop")
-                    self.send_to_thread(device.WEIGHT_SENSOR,temp[1]+'\n')
+                    self.send_to_thread(device.WEIGHT_SENSOR, temp[1]+'\n')
                
