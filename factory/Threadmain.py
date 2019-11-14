@@ -90,4 +90,4 @@ class Threadmain:
         if len(self.thread_dic)==5:
             self.start()
     def lean_thread(self):
-        self.db.start()
+        self.db.startTread()

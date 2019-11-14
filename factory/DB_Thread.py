@@ -7,10 +7,10 @@ from sklearn.linear_model import LinearRegression
 import pandas as pd
 import time
 
-class DBconn(threading.Thread):
+class DBconn():
     def __init__(self, threadmanager):
         #스레드 초기화
-        threading.Thread.__init__(self)
+        
         #관리할 클래스 저장
         self.tm=threadmanager
         self.count=0
@@ -24,14 +24,21 @@ class DBconn(threading.Thread):
         self.product_no=0
         #공정 날짜 저장
         self.today=datetime.datetime.now().strftime('%Y-%m-%d')
+        
     
+    def startTread(self):
+        self.leaning_tread=threading.Thread(target=self.run())
+        self.leaning_tread.start()
     #쓰레드 시작
     def run(self):
         #현재 DB에서 재원의 컬럼이 변하는 지 확인
-            self.update_set_value( self.run_data())
+            self.update_set_value( self.lean_data())
             self.tm.refrash_data()
-            self.join()
-    
+            self.stoptTread()
+
+    def stoptTread(self):
+        self.leaning_tread.join()
+
     def get_product_value(self, product):
         self.cursor.execute("select * from product where %s limit 1",(product))
         rows=self.cursor.fetchall()
@@ -60,7 +67,7 @@ class DBconn(threading.Thread):
         self.cursor.execute(sql,(str(opentime), self.tm.target_weight, self.tm.target_range))
         self.conn.commit()
 
-    def run_data(self):
+    def lean_data(self):
         sql="select log.date,log.weight,log.result, setting_value.open_time, setting_value.target_weight from log, setting_value where log.settingnum=setting_value.no"
         data = pd.read_sql_query(sql,self.conn)
         x=pd.DataFrame(data['weight'])
