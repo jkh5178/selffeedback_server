@@ -1,5 +1,7 @@
 from flask import Flask, url_for, render_template, request, redirect
 from module.connect_Factory import FactoryConnectMaster
+from module.DB import Db
+db = Db()
 
 app = Flask( __name__ )
 key=True
