@@ -8,7 +8,7 @@ db=Db()
 
 app = Flask( __name__ )
 app.secret_key = "mysecret"
-socket_io = SocketIO(app)
+socket_io = SocketIO(app,cors_allowed_origins="*")
 
 def push_data():
     global socket_io
@@ -39,4 +39,4 @@ def modify():
 
 
 if __name__ == "__main__":
-    socket_io.run( app=app, port = 8080, debug = True )
+    socket_io.run( app=app,host='0.0.0.0', port = 8080, debug = True )

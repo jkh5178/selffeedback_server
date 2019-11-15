@@ -53,7 +53,6 @@
       google.charts.setOnLoadCallback(drawMultSeries);
 
       function drawMultSeries() {
-
         var data = google.visualization.arrayToDataTable([
           ['product', '양품량', '불량품량'],
           ['product_A', 23, 2],
@@ -73,13 +72,14 @@
             title: '상품품목'
           }
         };
-   
+
         var chart = new google.visualization.BarChart(document.getElementById('comparison_chart'));
         chart.draw(data, options);
       }
       $(document).ready(function(){
+
         console.log("start");
-          var sock = io.connect('http://127.0.0.1:8080');//소캣연결
+          var sock = io.connect('http://192.168.0.2:8080');//소캣연결
           console.log("연결!!");
           sock.on('new', function(msg){
             console.log(msg)
@@ -88,7 +88,7 @@
           });
       });
 
-//캔버스
+
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
       ctx.beginPath();
