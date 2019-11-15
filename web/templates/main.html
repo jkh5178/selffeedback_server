@@ -78,8 +78,8 @@
       }
       $(document).ready(function(){
 
-        console.log("start");
-          var sock = io.connect('http://192.168.0.2:8080');//소캣연결
+        console.log(document.location.href);
+          var sock = io.connect(document.location.href);//소캣연결
           console.log("연결!!");
           sock.on('new', function(msg){
             console.log(msg)
