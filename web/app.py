@@ -12,12 +12,13 @@ socket_io = SocketIO(app)
 
 def push_data():
     global socket_io
+    
     global db
     while True :
         sql="select count(*) as num, date from log group by date"
         data=db.read_data_dataframe(sql)
         send_data=data.to_dict()
-        print(send_data)
+        print(data)
         socket_io.emit('new',send_data,broadcast=True)
         time.sleep(10)
 

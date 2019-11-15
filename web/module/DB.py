@@ -6,7 +6,10 @@ class Db():
         self.cursor=self.conn.cursor(pymysql.cursors.DictCursor)
     
     def read_data_dataframe(self,qurey):
-        return pd.read_sql_query(qurey,self.conn)
+        print(qurey)
+        self.conn.commit()
+        data=pd.read_sql_query(qurey,self.conn)
+        return data
         
     def input_data(self,qurey):
         self.cursor.execute(qurey)
