@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!--web소캣 script-->
     <script type="text/javascript">
+
       //총 생산량 차트
       google.charts.load('current', {
         'packages': ['corechart']
       });
       google.charts.setOnLoadCallback(drawVisualization);
 
-      function drawVisualization() {
-        var data = google.visualization.arrayToDataTable([
-          ['product', '생산량'],
-          ['product_A', 25],
-          ['product_B', 35],
-          ['product_C', 20]
-        ]);
+      function drawVisualization(setdata) {
+        console.log(setdata);
+        var get=[['date','생산량'],];
+        for (var i=0;i<Object.keys(setdata['date']).length;i++){
+          console.log(i)
+          get.push([setdata['date'][i],setdata['num'][i]])
+          console.log(get)
+        }
+        var data =new google.visualization.arrayToDataTable(
+        get);
 
         var options = {
           vAxis: {
@@ -47,6 +53,7 @@
       google.charts.setOnLoadCallback(drawMultSeries);
 
       function drawMultSeries() {
+
         var data = google.visualization.arrayToDataTable([
           ['product', '양품량', '불량품량'],
           ['product_A', 23, 2],
@@ -70,8 +77,18 @@
         var chart = new google.visualization.BarChart(document.getElementById('comparison_chart'));
         chart.draw(data, options);
       }
+      $(document).ready(function(){
+        console.log("start");
+          var sock = io.connect('http://127.0.0.1:8080');//소캣연결
+          console.log("연결!!");
+          sock.on('new', function(msg){
+            console.log(msg)
+            drawVisualization(msg);
+            
+          });
+      });
 
-
+//캔버스
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
       ctx.beginPath();
@@ -259,7 +276,7 @@
     <div id="container">
       <div>
         <div>
-          <div class="header_1">목표량</div>
+          <div class="header_1">목표량<input type="text"  id="test"></div>
           <div class="header_2">양품량</div>
           <div class="header_3">불량품량</div>
         </div>
