@@ -19,7 +19,6 @@ def push_data():
         sql="select count(*) as num, date from log group by date"
         data=db.read_data_dataframe(sql)
         send_data=data.to_dict()
-        print(data)
         socket_io.emit('new',send_data,broadcast=True)
         time.sleep(1)
 
@@ -28,10 +27,9 @@ factory_connecter=FactoryConnectMaster()
 @app.route("/")
 def main():
     global push_data_thread
-    #global factory_connecter
-    #if not factory_connecter.isAlive():
-    #    FactoryConnectMaster.connect()
-    #    factory_connecter.start()
+    global factory_connecter
+    if not factory_connecter.isAlive():
+        factory_connecter.start()
     if not push_data_thread.isAlive():
         push_data_thread.start()
     return render_template('main.html')
