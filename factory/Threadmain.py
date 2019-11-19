@@ -37,10 +37,12 @@ class Threadmain:
         if message == "A":
             cd = CupDispensor(index=device.CUP_DISPENSOR,client=socket,mainThread=self)
             self.thread_dic[cd.index] = cd
+            print()
             cd.start()
         elif message == "B":
             pd = ProductDipensor(index=device.PRODUCT_DISPENSOR,client=socket,mainThread=self,opentime=self.opentime)
             self.thread_dic[pd.index] = pd
+            print(pd)
             pd.start()
         elif message == "C":
             ws = WeightSeneor(index=device.WEIGHT_SENSOR,client=socket,mainThread=self,target_range= self.target_range, target_weight=self.target_weight)
@@ -61,7 +63,9 @@ class Threadmain:
     #소캣 list에서 삭제
     def remove_client(self,thread):
         print(thread)
+        self.thread_dic[thread.index].stop()
         del(self.thread_dic[thread.index])
+        
         #소캣 전체 시작
     def start(self):
         print("start")
@@ -75,8 +79,8 @@ class Threadmain:
         print("end")
         self.main_state="end"
         self.thread_dic[device.CUP_DISPENSOR].client.close()
-        self.thread_dic[device.PRODUCT_DISPENSOR].client.close()
-        self.thread_dic[device.WEIGHT_SENSOR].client.close()
+        self.thread_dic[device.PRODUCT_DISPENSOR].send_to_device(self.main_state)
+        self.thread_dic[device.WEIGHT_SENSOR].send_to_device(self.main_state)
         self.thread_dic[device.CONVEYER].client.close()
     #C에서 전송한 데이터 DB로 저장
     def savedata(self,weight, value):
@@ -85,9 +89,9 @@ class Threadmain:
 
     def refrash_data(self):
         self.target_weight,self.opentime, self.target_range=self.db.get_SetValue()
-        self.stop()
-        time.sleep(30)
-        if len(self.thread_dic)==5:
-            self.start()
+        self.thread_dic[device.PRODUCT_DISPENSOR].send_to_device(str(self.opentime))
+        self.thread_dic[device.WEIGHT_SENSOR].send_to_device(str(self.target_weight))
+        self.thread_dic[device.WEIGHT_SENSOR].send_to_device(str(self.target_range))
+
     def lean_thread(self):
         self.db.startTread()

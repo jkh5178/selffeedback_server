@@ -12,8 +12,8 @@ class Conveyer(Client):
                 print(temp)
                 if temp[0]=="B":
                     print("B stop")
-                    self.send_to_thread(device.PRODUCT_DISPENSOR, temp[1]+'\n')
+                    self.send_to_thread(device.PRODUCT_DISPENSOR, temp[1])
                 elif temp[0]=="C":
                     print("C stop")
-                    self.send_to_thread(device.WEIGHT_SENSOR, temp[1]+'\n')
+                    self.send_to_thread(device.WEIGHT_SENSOR, temp[1])
                

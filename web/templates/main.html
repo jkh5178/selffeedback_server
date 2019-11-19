@@ -81,6 +81,7 @@
       }
       $(document).ready(function() {
 
+<<<<<<< HEAD
         console.log("start");
         var sock = io.connect('http://localhost:8080'); //소캣연결
         console.log("연결!!");
@@ -89,6 +90,16 @@
           drawVisualization(msg);
 
         });
+=======
+        console.log(document.location.href);
+          var sock = io.connect(document.location.href);//소캣연결
+          console.log("연결!!");
+          sock.on('new', function(msg){
+            console.log(msg)
+            drawVisualization(msg);
+            
+          });
+>>>>>>> f98bfecb3f7a5c41015377aa39fabca5f4240a78
       });
 
 
@@ -221,10 +232,11 @@
       </div>
       <div>
         <div class="production_line">
-          <div>
-            <button class="button1">공정 가동</button>
-            <button class="button2">가동 정지</button>
-          </div>
+          <form action="/start">
+            <input type="submit" class="button1" value="공정 가동">
+          </form><form action="/end">
+            <input type="submit" class="button2" value="공정 정지">
+          </form>
           <br />
           <h2>생산 라인</h2>
           <canvas id="myCanvas" width="800" height="450"></canvas>

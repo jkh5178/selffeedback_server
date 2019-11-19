@@ -26,8 +26,8 @@ class Client(threading.Thread):
         except Exception as err:
             print(err)
             print(self.tm.thread_dic)
-            self.tm.remove_client(self)
             self.client.close()
+            self.tm.remove_client(self)
             print(self.name+"client finish")
 
     ##내가 받은 내용 같은 관리 클래스에 들어있는 쓰레드에게 전송
@@ -38,4 +38,4 @@ class Client(threading.Thread):
     ##자신의 공정에게 메시지 전달
     def send_to_device(self,message):
         print(self.index,message)
-        self.client.send(message.encode())
+        self.client.send((message+'\n').encode())
