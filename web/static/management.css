@@ -1,0 +1,172 @@
+/* 메뉴바 */
+ul {
+  list-style-type: none;
+  height: 70px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 10px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+
+#container {
+  width: 1400px;
+  height: 580px;
+  margin: 10px auto;
+  padding: 20px;
+  border: 10px solid #bcbcbc;
+}
+
+div.header_product {
+  width: 1350px;
+  height: 20px;
+  padding: 20px;
+  margin-top: 10px;
+  border: 3px solid #bcbcbc;
+}
+
+
+div.header_1 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.header_2 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.header_3 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.content_1 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.content_2 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.content_3 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.product_modify {
+  width: 1350px;
+  height: 20px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 3px solid #bcbcbc;
+  display: inline-block;
+}
+
+div.modify_1 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.modify_2 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+div.modify_3 {
+  width: 422px;
+  height: 50px;
+  padding: 20px;
+  margin-top: 20px;
+  float: left;
+  border: 1px solid #bcbcbc;
+}
+
+/* button */
+.button {
+  border-radius: 4px;
+  background-color: #6C6C6E;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
