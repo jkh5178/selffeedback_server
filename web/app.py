@@ -31,7 +31,6 @@ def push_data():
         #
         FactoryConnectMaster.send_message("c")#
         socket_io.emit('device',FactoryConnectMaster.check_device(),broadcast=True)#기기 정보
-
         time.sleep(1)
 
 push_data_thread=Thread(target=push_data)
@@ -41,10 +40,12 @@ factory_connecter.start()
 def main():
     global push_data_thread
     global factory_connecter
+
     if not push_data_thread.isAlive():
         push_data_thread.start()
     if not factory_connecter.isAlive():
         factory_connecter.start()
+
 
     return render_template('main.html')
 

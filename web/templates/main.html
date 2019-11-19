@@ -44,69 +44,10 @@
         chart.draw(data, options);
       }
 
-      //양품.불량품 차트
-      google.charts.load('current', {
-        packages: ['corechart', 'bar']
-      });
-      google.charts.setOnLoadCallback(drawMultSeries);
-
-      function drawMultSeries() {
-        var data = google.visualization.arrayToDataTable([
-          ['product', '양품량', '불량품량'],
-          ['product_A', 23, 2],
-          ['product_B', 34, 1],
-          ['product_C', 17, 3]
-        ]);
-
-        var options = {
-          chartArea: {
-            width: '50%'
-          },
-          hAxis: {
-            title: '양품/불량품 수량',
-            minValue: 0
-          },
-          vAxis: {
-            title: '상품품목'
-          }
-        };
-
-        var chart = new google.visualization.BarChart(document.getElementById('comparison_chart'));
-        chart.draw(data, options);
-      }
-      $(document).ready(function() {
-        console.log(document.location.href);
-          var sock = io.connect(document.location.href);//소캣연결
-          console.log("연결!!");
-          sock.on('new', function(msg){
-            drawVisualization(msg);
-            
-          });
-
-
-          sock.on('device', function(msg){
-            
-            console.log(msg)
-          });
-          sock.on('head_data', function(msg){
-            document.getElementById("target_weight").innerHTML = msg['target'][0];
-            document.getElementById("good_product").innerHTML = msg['good'][0];
-            document.getElementById("bad_product").innerHTML = msg['bad'][0];
-          });
-
-      });
-
-
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
-      ctx.beginPath();
-      ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-      ctx.stroke();
-    </script>
-
-      <script type="text/javascript">
+    
       class checkCircle {
-        constructor(ctx, x, y, color) {
+        constructor(ctx, x, y, color,index) {
+          this.index=index;
           this.ctx = ctx;
           this.x = x;
           this.y = y;
@@ -122,22 +63,23 @@
           this.ctx.fill();
           this.ctx.stroke();
         }
-        change() {
-          if (this.color == color_red) {
-            this.color = color_green;
-          } else {
-            this.color = color_red
-          }
-          this.make()
-        }
+        change_color(color) {
+          this.color = color;
+          this.make();}
+        
       }
 
       var color_red = "red";
       var color_green = "#4ce932";
-
-
+      var canvas="";
+      var ctx="";
+      var A;
+      var B;
+      var C;
+      var D;
       function draw() {
-
+        canvas = document.getElementById('myCanvas');
+        ctx = canvas.getContext('2d');
         //이미지 객체 생성
         var imgConveyor = new Image();
         var imgHand = new Image();
@@ -147,19 +89,23 @@
         var imgLoadcell = new Image();
         var imgWifi = new Image();
 
+        imgConveyor.src = "static/img/conveyor.png";
+        imgHand.src = "static/img/hand.png";
+        imgCup.src = "static/img/cup.png";
+        imgDispenser.src = "static/img/dispenser.png";
+        imgHopper.src = "static/img/hopper.png";
+        imgLoadcell.src = "static/img/loadcell.png";
+        imgWifi.src = "static/img/wifi.png";
         //원만들기
-        var canvas = document.querySelector('canvas');
-        var ctx = canvas.getContext('2d');
-        var A = new checkCircle(ctx, 245, 60, color_green);
-        var B = new checkCircle(ctx, 460, 90, color_green);
-        var C = new checkCircle(ctx, 590, 330, color_green);
-        var D = new checkCircle(ctx, 690, 330, color_green);
+
+        A = new checkCircle(ctx, 245, 60, color_red);
+        B = new checkCircle(ctx, 460, 90, color_red);
+        D = new checkCircle(ctx, 310, 290, color_red);
+        C = new checkCircle(ctx, 630, 330, color_red);
 
         //페이지 로드후 이미지가 로드 되었을 때 이미지 출력
         imgConveyor.addEventListener('load', function() {
           //로드된 이미지를 캔버스에 출력
-          var ctx = document.getElementById('myCanvas').getContext("2d");
-
           //canvas.drawImage() 함수를 사용하여 이미지 출력
           //drawImage ( image sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
           ctx.drawImage(imgConveyor, 20, 20, 700, 350);
@@ -174,42 +120,56 @@
           ctx.drawImage(imgHand, 620, 220, 100, 100);
           ctx.drawImage(imgWifi, 230, 0, 40, 40);
           ctx.drawImage(imgWifi, 440, 30, 40, 40);
-          ctx.drawImage(imgWifi, 580, 150, 40, 40);
+          ctx.drawImage(imgWifi, 330, 270, 40, 40);
           ctx.drawImage(imgWifi, 670, 180, 40, 40);
-
-
           //원 모양 만들기 (+25, +120)
-
-
           A.make();
           B.make();
           C.make();
           D.make();
 
         }, false);
-        document.addEventListener('click', function() {
-          A.change();
-          B.change();
-          C.change();
-          D.change();
-        })
-
-        //이미지 경로 설정
-        imgConveyor.src = "static/img/conveyor.png";
-        imgHand.src = "static/img/hand.png";
-        imgCup.src = "static/img/cup.png";
-        imgDispenser.src = "static/img/dispenser.png";
-        imgHopper.src = "static/img/hopper.png";
-        imgLoadcell.src = "static/img/loadcell.png";
-        imgWifi.src = "static/img/wifi.png";
-
       }
+      $(document).ready(function() {
+        console.log(document.location.href);
+          var sock = io.connect(document.location.href);//소캣연결
+          console.log("연결!!");
+          sock.on('new', function(msg){
+            drawVisualization(msg);
+            
+          });
 
+
+          sock.on('device', function(msg){
+            A.change_color(color_red);
+            B.change_color(color_red);
+            C.change_color(color_red);
+            D.change_color(color_red);
+            msg.forEach(function(item){
+              switch (item){
+                case 0:A.change_color(color_green);break;
+                case 1:B.change_color(color_green);break;
+                case 2:C.change_color(color_green);break;
+                case 3:D.change_color(color_green);break;
+
+              }
+              console.log(item)
+            })
+          });
+          sock.on('head_data', function(msg){
+            document.getElementById("target_weight").innerHTML = msg['target'][0];
+            document.getElementById("good_product").innerHTML = msg['good'][0];
+            document.getElementById("bad_product").innerHTML = msg['bad'][0];
+            console.log(ctx)
+          });
+          draw();
+          
+      });
     </script>
 
   </head>
 
-  <body onload="draw();">
+  <body >
     <ul>
       <li><a href="/"><img src={{url_for('static', filename="img/main.png") }} style="width:50px; height:50px;"></a></li>
       <li><a href="/management"><img src={{url_for('static', filename="img/management.png") }} style="width:50px; height:50px;"></a></li>
@@ -237,13 +197,9 @@
         </div>
         <div class="cup_stock">컵 재고량</div>
         <div class="product_stock">상품 재고량</div>
-        <div class="total_production">
+        <div class="total_production" style="  height: 366px;">
           총 생산량
-          <div id="total_production_chart" style="width:460px; height: 145px;"></div>
-        </div>
-        <div class="comparison">
-          양품/불량품 현황
-          <div id="comparison_chart" style="width:340px; height: 160px;"></div>
+          <div id="total_production_chart" style="width:480px; height: 300px; margin:0;"></div>
         </div>
       </div>
     </div>

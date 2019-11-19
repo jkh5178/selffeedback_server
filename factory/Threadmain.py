@@ -63,7 +63,7 @@ class Threadmain:
     #소캣 list에서 삭제
     def remove_client(self,thread):
         print(thread)
-        self.thread_dic[thread.index].stop()
+        #self.thread_dic[thread.index].join()
         del(self.thread_dic[thread.index])
         
         #소캣 전체 시작

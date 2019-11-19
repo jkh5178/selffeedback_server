@@ -98,7 +98,7 @@ div.product_stock {
 
 div.total_production {
   width: 496px;
-  height: 153px;
+  height: 366px;
   padding: 20px;
   margin-bottom: 20px;
   float: right;
@@ -121,7 +121,6 @@ div.comparison {
 /* 차트 위치 */
 #total_production_chart {
   float: right;
-  margin-right: 50px;
 }
 
 #comparison_chart {

@@ -39,3 +39,6 @@ class Client(threading.Thread):
     def send_to_device(self,message):
         print(self.index,message)
         self.client.send((message+'\n').encode())
+
+    def client_check(self):
+        print(self.client)
