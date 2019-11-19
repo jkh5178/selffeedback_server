@@ -24,6 +24,7 @@ class DBconn():
         self.product_no=0
         #공정 날짜 저장
         self.today=datetime.datetime.now().strftime('%Y-%m-%d')
+        self.get_product_value("쌀")
         
     
     def startTread(self):
@@ -40,7 +41,7 @@ class DBconn():
         self.leaning_tread.join()
 
     def get_product_value(self, product):
-        self.cursor.execute("select * from product where %s limit 1",(product))
+        self.cursor.execute("select * from product where name=%s",(product))
         rows=self.cursor.fetchall()
         for i in rows:
             self.product_no=i['no']
@@ -77,3 +78,11 @@ class DBconn():
         print(model.coef_, model.intercept_)
         new_time=model.predict([[self.tm.target_weight]])
         return new_time[0][0]
+
+    def get_product_count(self):
+        count=0
+        self.cursor.execute("select count(*) as count from log where productnum=%s",self.product_no)
+        rows=self.cursor.fetchall()
+        for i in rows:
+            count=i['count']
+        return count

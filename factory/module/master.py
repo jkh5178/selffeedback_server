@@ -15,6 +15,10 @@ class Master(Client):
                 self.tm.stop()
                 self.send_to_device('end')
             elif message=='c':
-                print(self.tm.thread_dic)
+                send_list=[]
+                connect_device_list=list(self.tm.thread_dic.keys())
+                print(list(self.tm.thread_dic.keys()))
                 print(len(self.tm.thread_dic))
-                self.send_to_device(str(len(self.tm.thread_dic)))
+                for i in connect_device_list:
+                    send_list.append(i.value)
+                self.send_to_device("device;"+str(send_list))

@@ -20,7 +20,7 @@ class WeightSeneor(Client):
                     if(self.tm.count>10 and self.tm.count%2==0):
                         self.tm.lean_thread()
 
-                    elif (self.tm.count%2==0 and self.tm.count<=10):
+                    elif (self.tm.db.get_product_count()<=10 and self.tm.count<=10):
                         self.tm.opentime-=200
                         self.tm.db.update_set_value(self.tm.opentime)
                         self.tm.refrash_data()
