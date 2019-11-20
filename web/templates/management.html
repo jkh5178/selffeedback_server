@@ -5,7 +5,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for( 'static', filename='management.css' ) }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+      <script>
+        $(document).ready(function() {
+            var sock = io.connect(document.location.protocol+"//"+document.location.host);//소캣연결
+            console.log("연결!!");
+
+
+            sock.on('head_data', function(msg){
+              console.log(msg);
+              document.getElementById("target_product").innerHTML = msg['target'][0];
+              document.getElementById("good_product").innerHTML = msg['good'][0];
+              document.getElementById("bad_product").innerHTML = msg['bad'][0];
+              document.getElementById("production_rate").innerHTML = ((msg['good'][0]+msg['bad'][0])/msg['target'][0]).toFixed(2);
+              document.getElementById("good_rate").innerHTML= (msg['good'][0]/(msg['good'][0]+msg['bad'][0])).toFixed(2);
+            });
+
+        });
+      
+        function btn(){
+          alert('관리자에게 메시지를 전송하였습니다.')
+        }
+
+      </script>
   </head>
 
   <body>
@@ -19,26 +44,26 @@
       </div>
       <div class="header_product" align="center">제품A</div>
       <div class="#">
-        <div class="header_1">목표량</div>
-        <div class="header_2">양품량</div>
-        <div class="header_3">불량품량</div>
+        <div class="header_1">목표량<h3 style="display:inline; margin-left:20px;" id="target_product"></h3></div>
+        <div class="header_2">양품량<h3 style="display:inline; margin-left:20px;" id="good_product"></h3></div>
+        <div class="header_3">불량품량<h3 style="display:inline; margin-left:20px;"  id="bad_product"></h3></div>
       </div>
       <div class="#">
-        <div class="content_1">달성률</div>
-        <div class="content_2">불량률</div>
+        <div class="content_1">생산률<h3 style="display:inline; margin-left:20px;" id="production_rate"></h3></div>
+        <div class="content_2">양품률<h3 style="display:inline; margin-left:20px;" id="good_rate"></h3></div>
         <div class="content_3">
           관리자
           <div align="right">
-            <input type="button" class="#" value="호출" />
+            <button onclick="javascript:btn()">호 출</button>
           </div>
         </div>
       </div>
       <div class="product_modify" align="center">생산품목 변경</div>
-      <form method="get">
+      <form action="/inputdata" method="POST">
       <div>
-        <div class="modify_1">목표량 변경: <input type="number" id="a" name="a" step="0.1" value="0">g</div>
-        <div class="modify_2">생산품목 변경: <input type="text" id="b" name="b"></div>
-        <div class="modify_3">오차률 변경: <input type="number" id="c" name="c" step="0.1" value="0">%</div>
+        <div class="modify_1">상품무게 변경: <input type="number" id="weight" name="weight" step="0.1" value="0">g</div>
+        <div class="modify_2">생산품목 변경: <input type="text" id="product_name" name="product_name"></div>
+        <div class="modify_3">오차률 변경: <input type="number" id="error_range" name="error_range" step="0.1" value="0">%</div>
       </div>
     
       <div align="right">

@@ -17,10 +17,10 @@ class WeightSeneor(Client):
                     self.send_to_thread(device.CONVEYER,message+'\n')
                     #그외에는 무게 측정 값이 전달 됨으로 판별후 DB에 저장
                     print(self.tm.count)
-                    if(self.tm.count>10 and self.tm.count%2==0):
+                    if(self.tm.count>4 and self.tm.count%2==0):
                         self.tm.lean_thread()
 
-                    elif (self.tm.db.get_product_count()<=10  and self.tm.count%2==0):
+                    elif (self.tm.db.get_product_count()<=4):
                         self.tm.opentime-=200
                         self.tm.db.update_set_value(self.tm.opentime)
                         self.tm.refrash_data()

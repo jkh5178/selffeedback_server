@@ -77,6 +77,7 @@ class DBconn():
         model.fit(x,y)
         print(model.coef_, model.intercept_)
         new_time=model.predict([[self.tm.target_weight]])
+        
         return new_time[0][0]
 
     def get_product_count(self):
