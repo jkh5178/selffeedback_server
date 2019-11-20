@@ -8,7 +8,4 @@ class RemainSensor(Client):
             self.content=self.client.recv(32)
             message=str(self.content)[1:].strip("'")
             print(message)
-            if(message=="A"):
-                self.send_to_thread(device.MASTER,"remain;A;error")
-            elif(message=="B"):
-                self.send_to_thread(device.MASTER,"remain;B;error")
+            self.send_to_thread(device.MASTER,"remain;"+message)

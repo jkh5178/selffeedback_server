@@ -160,7 +160,19 @@
             document.getElementById("target_weight").innerHTML = msg['target'][0];
             document.getElementById("good_product").innerHTML = msg['good'][0];
             document.getElementById("bad_product").innerHTML = msg['bad'][0];
-            console.log(ctx)
+          });
+          sock.on('remain', function(msg){
+            $("#cup_remain").text("양호");
+            $("#cup_remain").css("color",color_green);
+            $("#product_remain").text("양호");
+            $("#product_remain").css("color",color_green);
+            msg.forEach(function(item){
+              switch (item){
+                case "A":$("#cup_remain").text("부족");$("#cup_remain").css("color",color_red); break;
+                case "B":$("#product_remain").text("부족");$("#product_remain").css("color",color_red);break;
+              }
+            console.log(item);
+            })
           });
           draw();
           
@@ -195,8 +207,8 @@
           <canvas id="myCanvas" width="800" height="450"></canvas>
           <button type="button" name="button" text="button" onclick="changeColor(cup_dispensor_color)"></button>
         </div>
-        <div class="cup_stock">컵 재고량</div>
-        <div class="product_stock">상품 재고량</div>
+        <div class="cup_stock">컵 재고량<h3 style="display:inline; margin-left:20px;" id="cup_remain"></h3></div>
+        <div class="product_stock">상품 재고량<h3 style="display:inline; margin-left:20px;" id="product_remain"></h3></div>
         <div class="total_production" style="  height: 366px;">
           총 생산량
           <div id="total_production_chart" style="width:480px; height: 300px; margin:0;"></div>

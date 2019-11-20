@@ -85,4 +85,5 @@ class DBconn():
         rows=self.cursor.fetchall()
         for i in rows:
             count=i['count']
+        print(count)
         return count

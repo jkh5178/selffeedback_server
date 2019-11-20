@@ -9,6 +9,8 @@ class FactoryConnectMaster(threading.Thread):
     conn = None
     current_time=0
     device_list=[]
+    current_remain=[]
+    current_remain_send_time=0
     def __init__(self):
         threading.Thread.__init__(self)
         self.connected=True
@@ -33,8 +35,11 @@ class FactoryConnectMaster(threading.Thread):
                     messages=message.split(";")
                     if messages[0]=="device":
                         FactoryConnectMaster.device_list=list(eval(messages[1]))
-                    elif messages[0]=="remian":
-                        pass
+                    elif messages[0]=="remain":
+                        FactoryConnectMaster.current_remain_send_time=time.time()
+                        FactoryConnectMaster.current_remain=messages[1].split(",")
+                    if(time.time()-FactoryConnectMaster.current_remain_send_time>=5):
+                        FactoryConnectMaster.current_remain=[]
                 except Exception as err:
                     print(err)
                     FactoryConnectMaster.conn.close()
@@ -43,7 +48,9 @@ class FactoryConnectMaster(threading.Thread):
     @classmethod
     def check_device(cls):
         return cls.device_list
-    
+    @classmethod
+    def check_remain(cls):
+        return cls.current_remain
     @classmethod
     def connect(cls):
         cls.conn = socket(AF_INET, SOCK_STREAM)

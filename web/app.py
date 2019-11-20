@@ -28,9 +28,11 @@ def push_data():
         send_target_weight_data=main_head_data.to_dict()
         socket_io.emit('head_data',send_target_weight_data,broadcast=True)#다른 데이터 전송
         
-        #
+        
         FactoryConnectMaster.send_message("c")#
         socket_io.emit('device',FactoryConnectMaster.check_device(),broadcast=True)#기기 정보
+
+        socket_io.emit('remain',FactoryConnectMaster.check_remain(),broadcast=True)#기기 정보
         time.sleep(1)
 
 push_data_thread=Thread(target=push_data)
@@ -43,6 +45,7 @@ def main():
 
     if not push_data_thread.isAlive():
         push_data_thread.start()
+
     if not factory_connecter.isAlive():
         factory_connecter.start()
 
