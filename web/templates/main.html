@@ -17,19 +17,23 @@
       google.charts.setOnLoadCallback(drawVisualization);
 
       function drawVisualization(setdata) {
-        var get=[['date','생산량'],];
+        var get=[['date','생산량',"정상품"],];
         for (var i=0;i<Object.keys(setdata['date']).length;i++){
-          get.push([setdata['date'][i],setdata['num'][i]])
+          get.push([setdata['date'][i],setdata['num'][i],setdata['product_num'][i]])
         }
         var data = new google.visualization.arrayToDataTable(
           get);
 
         var options = {
           vAxis: {
+            viewWindow: {
+              min: 0,
+              max:50
+          },
             title: '총 생산량'
           },
           hAxis: {
-            title: '생산품목'
+            title: '생산 날짜'
           },
           seriesType: 'bars',
           series: {

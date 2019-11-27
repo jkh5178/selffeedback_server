@@ -20,8 +20,8 @@
               document.getElementById("target_product").innerHTML = msg['target'][0];
               document.getElementById("good_product").innerHTML = msg['good'][0];
               document.getElementById("bad_product").innerHTML = msg['bad'][0];
-              document.getElementById("production_rate").innerHTML = ((msg['good'][0]+msg['bad'][0])/msg['target'][0]).toFixed(2);
-              document.getElementById("good_rate").innerHTML= (msg['good'][0]/(msg['good'][0]+msg['bad'][0])).toFixed(2);
+              document.getElementById("production_rate").innerHTML = ((msg['good'][0]+msg['bad'][0])/msg['target'][0]*100).toFixed(2);
+              document.getElementById("good_rate").innerHTML= ((msg['good'][0]/(msg['good'][0]+msg['bad'][0]))*100).toFixed(2);
             });
 
         });
@@ -42,7 +42,7 @@
       <div class="header">
         SmartFactory
       </div>
-      <div class="header_product" align="center">제품A</div>
+      <div class="header_product" align="center">현재 공정 현황</div>
       <div class="#">
         <div class="header_1">목표량<h3 style="display:inline; margin-left:20px;" id="target_product"></h3></div>
         <div class="header_2">양품량<h3 style="display:inline; margin-left:20px;" id="good_product"></h3></div>
@@ -58,17 +58,18 @@
           </div>
         </div>
       </div>
-      <div class="product_modify" align="center">생산품목 변경</div>
+      <div class="product_modify" align="center">생산 목표 변경</div>
       <form action="/inputdata" method="POST">
       <div>
         <div class="modify_1">상품무게 변경: <input type="number" id="weight" name="weight" step="0.1" value="0">g</div>
-        <div class="modify_2">생산품목 변경: <input type="text" id="product_name" name="product_name"></div>
-        <div class="modify_3">오차률 변경: <input type="number" id="error_range" name="error_range" step="0.1" value="0">%</div>
+        <div class="modify_2">오차률 변경: <input type="number" id="error_range" name="error_range" step="0.1" value="0">%</div>
+        <div class="modify_3">      <div align="right">
+          <button type="submit" class="button"><span> 적 용 </span></button>
+        </div>
+        </div>
       </div>
     
-      <div align="right">
-        <button type="submit" class="button"><span> 적 용 </span></button>
-      </div>
+
       </form>
     </div>
   </body>

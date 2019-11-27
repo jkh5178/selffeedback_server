@@ -6,6 +6,8 @@ import time
 from threading import Thread
 from module.connect_Factory import FactoryConnectMaster
 from threading import Event
+import datetime
+
 db=Db()
 app = Flask( __name__ )
 app.secret_key = "mysecret"
@@ -18,13 +20,14 @@ def push_data():
     while True :
         
         #양품/불량품 데이터
-        sql="select (select target_product from factory.product where no = 1)as target,count(case when result=1 then 1 end) as good, count(case when result=0 then 1 end) as bad from factory.log"
+        today= datetime.datetime.now().strftime('%Y-%m-%d')
+        sql="select (select target_product from factory.product where no = 1)as target,count(case when result=1 then 1 end) as good, count(case when result=0 then 1 end) as bad from factory.log where date='"+today+"'"
         main_head_data=db.read_data_dataframe(sql)
+        
         send_target_weight_data=main_head_data.to_dict()
-
         socket_io.emit('head_data',send_target_weight_data,broadcast=True)#다른 데이터 전송
         #그래프 데이터
-        sql="select count(*) as num, date from log group by date"
+        sql="select count(*) as num, count(case when result=1 then 1 end) as product_num,date from factory.log group by date"
         chart_data=db.read_data_dataframe(sql)
         send_chart_data=chart_data.to_dict()
         socket_io.emit('new',send_chart_data,broadcast=True)#그래프 데이터
